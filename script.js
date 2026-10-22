@@ -92,7 +92,6 @@ let countdown = 10;
 function updateServerStatus() {
     const ip = "gold.magmanode.com";
     const port = "27367";
-    // Önbellek tutulmasını önlemek için anlık zaman damgası ekliyoruz
     const cacheBuster = Date.now();
 
     fetch(`https://api.mcsrvstat.us/3/${ip}:${port}?_=${cacheBuster}`)
@@ -115,7 +114,6 @@ function updateServerStatus() {
             }
         })
         .catch(() => {
-            // Birincil servis başarısız olursa yedek servisi sorgula
             fetchFallbackStatus(ip, port);
         });
 }
@@ -177,7 +175,7 @@ function filterRules() {
     });
 }
 
-// Paket Satın Alma İşlemi
+// Paket Satın Alma İşlemi (WhatsApp Yönlendirmeli)
 function buyPackage(pkgName) {
     const user = localStorage.getItem("magma_user");
     if (!user) {
@@ -185,7 +183,17 @@ function buyPackage(pkgName) {
         openLoginModal();
         return;
     }
-    alert(`Sayın ${user}, ${pkgName} paketi satın alım sayfasına yönlendiriliyorsunuz!`);
+
+    // ⚠️ Kendi WhatsApp Business telefon numaranı buraya yaz (örn: 905300000000)
+    const whatsappNumber = "905300000000"; 
+
+    // WhatsApp otomatik mesaj tasarımı
+    const message = `Merhaba! Ben ${user}. Sunucunuzdan ${pkgName} paketini satın almak istiyorum. Ödeme için yardımcı olur musunuz?`;
+    const encodedMessage = encodeURIComponent(message);
+    
+    // WhatsApp sohbet linkini oluştur ve yeni sekmede aç
+    const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+    window.open(whatsappURL, '_blank');
 }
 
 // Admin Paneli: Fiyat Kaydetme
