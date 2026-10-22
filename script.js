@@ -69,19 +69,19 @@ function loadPrices() {
     if (document.getElementById("price-mvipplus")) document.getElementById("price-mvipplus").innerText = prices.mvipplus;
 }
 
-// Bakım Modu Durumu Kontrol Et
+// Bakım Modu Durumu Kontrol Et (Tam Ekran Overlay Uyumlu)
 function checkMaintenance() {
     const isMaint = localStorage.getItem("magma_maintenance") === "true";
     const maintMsg = localStorage.getItem("magma_maintenance_msg") || "Sunucumuzda bakım yapılmaktadır.";
-    const banner = document.getElementById("maintenanceBanner");
+    const overlay = document.getElementById("maintenanceOverlay");
     const text = document.getElementById("maintenanceText");
 
-    if (banner && text) {
+    if (overlay && text) {
         if (isMaint) {
-            banner.classList.remove("hidden");
+            overlay.classList.remove("hidden");
             text.innerText = maintMsg;
         } else {
-            banner.classList.add("hidden");
+            overlay.classList.add("hidden");
         }
     }
 }
@@ -184,7 +184,6 @@ function buyPackage(pkgName) {
         return;
     }
 
-    // ⚠️ Kendi WhatsApp Business telefon numaranı buraya yaz (örn: 905300000000)
     const whatsappNumber = "905383228459"; 
 
     // WhatsApp otomatik mesaj tasarımı
