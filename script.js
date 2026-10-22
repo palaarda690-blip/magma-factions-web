@@ -185,7 +185,7 @@ function buyPackage(pkgName) {
     }
 
     // ⚠️ Kendi WhatsApp Business telefon numaranı buraya yaz (örn: 905300000000)
-    const whatsappNumber = "905300000000"; 
+    const whatsappNumber = "905383228459"; 
 
     // WhatsApp otomatik mesaj tasarımı
     const message = `Merhaba! Ben ${user}. Sunucunuzdan ${pkgName} paketini satın almak istiyorum. Ödeme için yardımcı olur musunuz?`;
