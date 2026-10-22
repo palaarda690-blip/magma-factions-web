@@ -86,10 +86,16 @@ function checkMaintenance() {
     }
 }
 
-// Canlı Sunucu Durumu ve 10sn Otomatik Yenileme (Polling)
+// Canlı Sunucu Durumu (Önbellek Engellemeli ve Anlık Güncellemeli)
 let countdown = 10;
+
 function updateServerStatus() {
-    fetch("https://api.mcsrvstat.us/3/gold.magmanode.com:27367")
+    const ip = "gold.magmanode.com";
+    const port = "27367";
+    // Önbellek tutulmasını önlemek için anlık zaman damgası ekliyoruz
+    const cacheBuster = Date.now();
+
+    fetch(`https://api.mcsrvstat.us/3/${ip}:${port}?_=${cacheBuster}`)
         .then(res => res.json())
         .then(data => {
             const dot = document.getElementById("serverStatusDot");
@@ -98,10 +104,38 @@ function updateServerStatus() {
 
             if (!dot || !statusText || !players) return;
 
-            if (data.online) {
+            if (data && data.online === true) {
                 dot.className = "w-3 h-3 rounded-full bg-emerald-500 animate-pulse";
                 statusText.innerText = "Sunucu Çevrimiçi";
-                players.innerText = `${data.players.online} / ${data.players.max}`;
+                players.innerText = `${data.players ? data.players.online : 0} / ${data.players ? data.players.max : 0}`;
+            } else {
+                dot.className = "w-3 h-3 rounded-full bg-rose-500";
+                statusText.innerText = "Sunucu Çevrimdışı";
+                players.innerText = "0 / 0";
+            }
+        })
+        .catch(() => {
+            // Birincil servis başarısız olursa yedek servisi sorgula
+            fetchFallbackStatus(ip, port);
+        });
+}
+
+// Yedek Durum Kontrol Servisi
+function fetchFallbackStatus(ip, port) {
+    const cacheBuster = Date.now();
+    fetch(`https://mcapi.us/server/status?ip=${ip}&port=${port}&_=${cacheBuster}`)
+        .then(res => res.json())
+        .then(data => {
+            const dot = document.getElementById("serverStatusDot");
+            const statusText = document.getElementById("serverStatusText");
+            const players = document.getElementById("onlinePlayers");
+
+            if (!dot || !statusText || !players) return;
+
+            if (data && data.online) {
+                dot.className = "w-3 h-3 rounded-full bg-emerald-500 animate-pulse";
+                statusText.innerText = "Sunucu Çevrimiçi";
+                players.innerText = `${data.players.now} / ${data.players.max}`;
             } else {
                 dot.className = "w-3 h-3 rounded-full bg-rose-500";
                 statusText.innerText = "Sunucu Çevrimdışı";
@@ -112,8 +146,8 @@ function updateServerStatus() {
             const dot = document.getElementById("serverStatusDot");
             const statusText = document.getElementById("serverStatusText");
             if (dot && statusText) {
-                dot.className = "w-3 h-3 rounded-full bg-amber-500";
-                statusText.innerText = "Kontrol Ediliyor...";
+                dot.className = "w-3 h-3 rounded-full bg-rose-500";
+                statusText.innerText = "Sunucu Çevrimdışı";
             }
         });
 }
