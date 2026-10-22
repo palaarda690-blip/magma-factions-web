@@ -1,0 +1,51 @@
+@import url('https://fonts.googleapis.com/css2?family=Teko:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap');
+
+/* Genel Temel Stiller */
+body {
+    font-family: 'Inter', sans-serif;
+}
+
+.font-teko {
+    font-family: 'Teko', sans-serif;
+}
+
+/* Özel Parıltı ve Glow Efektleri */
+.glow-red {
+    box-shadow: 0 0 25px rgba(225, 29, 72, 0.4);
+}
+
+.glow-gold {
+    box-shadow: 0 0 25px rgba(234, 179, 8, 0.3);
+}
+
+.glow-red-hover:hover {
+    box-shadow: 0 0 30px rgba(225, 29, 72, 0.6);
+}
+
+/* Yavaş Dönen Animasyon */
+@keyframes spinSlow {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+.animate-spin-slow {
+    animation: spinSlow 8s linear infinite;
+}
+
+/* Özel Scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #09090b;
+}
+
+::-webkit-scrollbar-thumb {
+    background: #27272a;
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: #e11d48;
+}

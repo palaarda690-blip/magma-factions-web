@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magma Network | Yönetim Paneli</title>
+
+    <!-- External Frameworks & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Harici Ayrı CSS Dosyası -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen p-6">
+
+    <div class="max-w-4xl mx-auto">
+        <!-- Başlık -->
+        <div class="flex items-center justify-between mb-8 pb-4 border-b border-zinc-800">
+            <div>
+                <h1 class="font-teko text-4xl font-bold text-rose-500 uppercase">Magma Network Yönetim Paneli</h1>
+                <p class="text-sm text-zinc-400">VIP fiyatlarını ve bakım modunu buradan anında yönetebilirsin.</p>
+            </div>
+            <a href="index.html" class="px-4 py-2 bg-zinc-900 border border-zinc-800 rounded-xl text-sm font-semibold hover:border-rose-500 transition flex items-center gap-2">
+                <i class="fa-solid fa-arrow-left"></i> Siteye Dön
+            </a>
+        </div>
+
+        <!-- Fiyat Yönetim Kartları -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+            <div class="bg-zinc-900/60 border border-zinc-800 p-6 rounded-3xl">
+                <h3 class="font-teko text-2xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-tags text-amber-400"></i> VIP & Kasa Fiyatları (TL)</h3>
+                
+                <div class="space-y-4">
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1">VIP Fiyatı</label>
+                        <input type="number" id="input-vip" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1">VIP+ Fiyatı</label>
+                        <input type="number" id="input-vipplus" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1">MVIP Fiyatı</label>
+                        <input type="number" id="input-mvip" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm">
+                    </div>
+                    <div>
+                        <label class="block text-xs text-zinc-400 mb-1">MVIP+ Fiyatı</label>
+                        <input type="number" id="input-mvipplus" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm">
+                    </div>
+                    <button onclick="savePricesFromAdmin()" class="w-full py-3 bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-teko text-xl rounded-xl transition">Fiyatları Güncelle</button>
+                </div>
+            </div>
+
+            <!-- Bakım Modu Yönetimi -->
+            <div class="bg-zinc-900/60 border border-zinc-800 p-6 rounded-3xl flex flex-col justify-between">
+                <div>
+                    <h3 class="font-teko text-2xl font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-screwdriver-wrench text-rose-500"></i> Bakım Modu Kontrolü</h3>
+                    
+                    <div class="space-y-4">
+                        <div class="flex items-center justify-between bg-zinc-950 p-4 rounded-2xl border border-zinc-800">
+                            <span class="text-sm font-semibold">Bakım Modu Aktif mi?</span>
+                            <input type="checkbox" id="maintToggle" class="w-5 h-5 accent-rose-500 cursor-pointer">
+                        </div>
+                        <div>
+                            <label class="block text-xs text-zinc-400 mb-1">Bakım Duyuru Mesajı</label>
+                            <textarea id="maintMsg" rows="3" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm"></textarea>
+                        </div>
+                    </div>
+                </div>
+                <button onclick="saveMaintenanceFromAdmin()" class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold font-teko text-xl rounded-xl transition mt-6">Bakım Ayarlarını Kaydet</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Harici Ayrı JS Dosyası -->
+    <script src="script.js"></script>
+</body>
+</html>

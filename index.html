@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="tr" class="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Magma Network | 1.8.8 Factions</title>
+
+    <!-- External Frameworks & Fonts -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Harici Ayrı CSS Dosyası -->
+    <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-zinc-950 text-zinc-100 min-h-screen flex flex-col selection:bg-rose-500 selection:text-white">
+
+    <!-- Bakım Modu Banner -->
+    <div id="maintenanceBanner" class="hidden bg-rose-600 text-white px-4 py-2 text-center font-bold text-sm tracking-wide shadow-lg z-50 flex items-center justify-center gap-2">
+        <i class="fa-solid fa-triangle-exclamation animate-bounce"></i>
+        <span>SUNUCU BAKIMDA: <span id="maintenanceText">Şu anda bakımdayız, yakında açılacağız!</span></span>
+    </div>
+
+    <!-- Navigasyon -->
+    <nav class="sticky top-0 z-40 bg-zinc-950/80 backdrop-blur-md border-b border-zinc-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-20 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-rose-600 to-amber-500 flex items-center justify-center font-teko text-3xl font-bold shadow-lg glow-red">
+                    M
+                </div>
+                <div>
+                    <span class="font-teko text-3xl font-bold tracking-wider bg-gradient-to-r from-rose-500 via-amber-400 to-rose-500 bg-clip-text text-transparent">MAGMA NETWORK</span>
+                    <span class="block text-[10px] tracking-widest text-zinc-400 font-semibold uppercase">1.8.8 Classic Factions</span>
+                </div>
+            </div>
+
+            <div class="hidden md:flex items-center gap-8 font-medium">
+                <a href="#anasayfa" class="hover:text-rose-500 transition">Ana Sayfa</a>
+                <a href="#mekanikler" class="hover:text-rose-500 transition">1.8.8 Özellikleri</a>
+                <a href="#siralama" class="hover:text-rose-500 transition">Top Factions</a>
+                <a href="#magaza" class="text-amber-400 hover:text-amber-300 transition font-bold flex items-center gap-1.5"><i class="fa-solid fa-store"></i> VIP Mağaza</a>
+                <a href="#kurallar" class="hover:text-rose-500 transition">Kurallar</a>
+            </div>
+
+            <div class="flex items-center gap-3">
+                <div id="authContainer">
+                    <button onclick="openLoginModal()" class="bg-zinc-900 border border-zinc-700 hover:border-rose-500 text-zinc-200 px-4 py-2 rounded-xl text-sm font-semibold transition flex items-center gap-2">
+                        <i class="fa-solid fa-user-circle text-rose-500"></i> Giriş Yap
+                    </button>
+                </div>
+                <button onclick="toggleMobileMenu()" class="md:hidden text-zinc-300 hover:text-white p-2">
+                    <i class="fa-solid fa-bars text-xl"></i>
+                </button>
+            </div>
+        </div>
+
+        <!-- Mobil Menü -->
+        <div id="mobileMenu" class="hidden md:hidden bg-zinc-900 border-b border-zinc-800 px-4 py-4 space-y-3">
+            <a href="#anasayfa" class="block py-2 hover:text-rose-500">Ana Sayfa</a>
+            <a href="#mekanikler" class="block py-2 hover:text-rose-500">1.8.8 Özellikleri</a>
+            <a href="#siralama" class="block py-2 hover:text-rose-500">Top Factions</a>
+            <a href="#magaza" class="block py-2 text-amber-400 font-bold">VIP Mağaza</a>
+            <a href="#kurallar" class="block py-2 hover:text-rose-500">Kurallar</a>
+        </div>
+    </nav>
+
+    <!-- Hero Bölümü -->
+    <header id="anasayfa" class="relative overflow-hidden py-24 lg:py-32 border-b border-zinc-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+            <span class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-rose-500/10 border border-rose-500/30 text-rose-400 text-xs font-semibold uppercase tracking-widest mb-6">
+                <span class="w-2 h-2 rounded-full bg-rose-500 animate-pulse"></span> Klasik 1.8.8 Factions Heyecanı
+            </span>
+            <h1 class="font-teko text-6xl sm:text-7xl lg:text-8xl font-bold tracking-wide uppercase mb-6 leading-none">
+                Krallığını Kur, <span class="bg-gradient-to-r from-rose-500 to-amber-500 bg-clip-text text-transparent">Rakiplerini Ez!</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-zinc-400 text-lg mb-10">
+                Lapis, Hammadde, Gelişmiş Klan Savaşları, Obsidian Destroyer ve Eski Tarz PvP keyfi Magma Network'te seni bekliyor.
+            </p>
+
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4">
+                <button onclick="copyIP()" class="group relative inline-flex items-center gap-3 px-8 py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-amber-600 text-white font-bold text-lg shadow-xl glow-red hover:scale-105 transition-all">
+                    <i class="fa-solid fa-server"></i>
+                    <span id="ipText">gold.magmanode.com:27367</span>
+                    <i class="fa-regular fa-copy ml-2 group-hover:scale-125 transition"></i>
+                </button>
+            </div>
+            <p id="copyFeedback" class="text-xs text-rose-400 mt-2 opacity-0 transition">IP adresi panoya kopyalandı!</p>
+
+            <div class="mt-12 inline-flex items-center gap-6 px-6 py-3 rounded-2xl bg-zinc-900/80 border border-zinc-800 text-sm">
+                <div class="flex items-center gap-2">
+                    <span id="serverStatusDot" class="w-3 h-3 rounded-full bg-emerald-500 animate-pulse"></span>
+                    <span id="serverStatusText" class="font-semibold text-zinc-300">Sunucu Çevrimiçi</span>
+                </div>
+                <div class="w-px h-4 bg-zinc-800"></div>
+                <div class="text-zinc-400">
+                    Aktif Oyuncu: <span id="onlinePlayers" class="text-white font-bold">-- / --</span>
+                </div>
+                <div class="w-px h-4 bg-zinc-800"></div>
+                <div class="text-zinc-400 flex items-center gap-1">
+                    <i class="fa-solid fa-rotate text-xs animate-spin-slow"></i>
+                    <span id="refreshTimer">10s</span>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- 1.8.8 Factions Mekanikleri -->
+    <section id="mekanikler" class="py-20 border-b border-zinc-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-teko text-5xl font-bold uppercase tracking-wide">Özlenen <span class="text-rose-500">1.8.8 Mekanikleri</span></h2>
+                <p class="text-zinc-400">Saf ve kesintisiz nostaljik faction deneyimi.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="p-8 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 hover:border-rose-500/50 transition">
+                    <div class="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-2xl font-bold mb-6">
+                        <i class="fa-solid fa-shield-halved"></i>
+                    </div>
+                    <h3 class="font-teko text-3xl font-bold mb-3">Blok Vuruşu & Eski PvP</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Cooldown (bekleme süresi) olmayan, reflekslerin konuşturulduğu klasik 1.8.8 vuruş mekaniği.</p>
+                </div>
+
+                <div class="p-8 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 hover:border-rose-500/50 transition">
+                    <div class="w-14 h-14 rounded-2xl bg-amber-500/10 text-amber-500 flex items-center justify-center text-2xl font-bold mb-6">
+                        <i class="fa-solid fa-bomb"></i>
+                    </div>
+                    <h3 class="font-teko text-3xl font-bold mb-3">TNT Cannon & Obsidyen</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Klan savaşlarının vazgeçilmezi olan profesyonel patlatma sistemleri ve obsidyen kırıcılar.</p>
+                </div>
+
+                <div class="p-8 rounded-3xl bg-zinc-900/50 border border-zinc-800/80 hover:border-rose-500/50 transition">
+                    <div class="w-14 h-14 rounded-2xl bg-rose-500/10 text-rose-500 flex items-center justify-center text-2xl font-bold mb-6">
+                        <i class="fa-solid fa-gem"></i>
+                    </div>
+                    <h3 class="font-teko text-3xl font-bold mb-3">Lapis & Hammadde</h3>
+                    <p class="text-zinc-400 text-sm leading-relaxed">Gelişmiş kazı alanları, lüks lapis kasaları ve kolay para kazanma dengesi.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Top Factions Sıralaması -->
+    <section id="siralama" class="py-20 border-b border-zinc-900 bg-zinc-950/50">
+        <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-teko text-5xl font-bold uppercase tracking-wide">En Güçlü <span class="text-amber-400">Klanlar</span></h2>
+                <p class="text-zinc-400">Sunucunun zirvesindeki klanların güç ve zafer tablosu.</p>
+            </div>
+
+            <div class="bg-zinc-900/80 border border-zinc-800 rounded-3xl overflow-hidden shadow-2xl">
+                <table class="w-full text-left border-collapse">
+                    <thead>
+                        <tr class="border-b border-zinc-800 text-zinc-400 font-teko text-2xl tracking-wider bg-zinc-950/50">
+                            <th class="py-4 px-6">Sıra</th>
+                            <th class="py-4 px-6">Klan Adı</th>
+                            <th class="py-4 px-6">Lider</th>
+                            <th class="py-4 px-6">Güç (Power)</th>
+                        </tr>
+                    </thead>
+                    <tbody class="divide-y divide-zinc-800/60 font-medium">
+                        <tr class="hover:bg-zinc-800/30 transition">
+                            <td class="py-4 px-6 font-bold text-amber-400">#1</td>
+                            <td class="py-4 px-6 font-bold text-white flex items-center gap-2"><i class="fa-solid fa-crown text-amber-400"></i> Ottoman</td>
+                            <td class="py-4 px-6 text-zinc-300">ArdaPala</td>
+                            <td class="py-4 px-6 text-emerald-400 font-bold">450.0 / 500</td>
+                        </tr>
+                        <tr class="hover:bg-zinc-800/30 transition">
+                            <td class="py-4 px-6 font-bold text-zinc-300">#2</td>
+                            <td class="py-4 px-6 font-bold text-white">Anka</td>
+                            <td class="py-4 px-6 text-zinc-300">KaanReis</td>
+                            <td class="py-4 px-6 text-emerald-400 font-bold">380.0 / 400</td>
+                        </tr>
+                        <tr class="hover:bg-zinc-800/30 transition">
+                            <td class="py-4 px-6 font-bold text-amber-700">#3</td>
+                            <td class="py-4 px-6 font-bold text-white">MagmaTeam</td>
+                            <td class="py-4 px-6 text-zinc-300">GhostPlayer</td>
+                            <td class="py-4 px-6 text-emerald-400 font-bold">290.5 / 300</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </section>
+
+    <!-- VIP Mağazası -->
+    <section id="magaza" class="py-20 border-b border-zinc-900">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <span class="text-amber-400 font-bold uppercase tracking-widest text-xs">Destekçi Paketleri</span>
+                <h2 class="font-teko text-5xl font-bold uppercase tracking-wide mt-1">VIP & Kasa Mağazası</h2>
+                <p class="text-zinc-400">Sunucuya destek ol, ayrıcalıklı kitler ve kasa anahtarları kazan!</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-6">
+                <!-- VIP -->
+                <div class="bg-zinc-900/60 border border-zinc-800 rounded-3xl p-6 flex flex-col justify-between hover:border-amber-500/50 transition">
+                    <div>
+                        <div class="text-zinc-400 font-teko text-2xl uppercase tracking-wider">Başlangıç Paketi</div>
+                        <h3 class="font-teko text-4xl font-bold text-amber-400 mb-4">VIP</h3>
+                        <div class="text-3xl font-bold font-teko mb-6"><span id="price-vip">30</span> TL <span class="text-xs text-zinc-500 font-normal">/ 30 Gün</span></div>
+                        <ul class="space-y-3 text-sm text-zinc-300 mb-8">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> /kit vip (Elmas Set)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> 3x VIP Kasa Anahtarı</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> /fly (Uçuş Yetkisi)</li>
+                        </ul>
+                    </div>
+                    <button onclick="buyPackage('VIP')" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-teko text-xl transition">Satın Al</button>
+                </div>
+
+                <!-- VIP+ -->
+                <div class="bg-zinc-900/60 border border-amber-500/30 rounded-3xl p-6 flex flex-col justify-between relative glow-gold">
+                    <div class="absolute -top-3 right-6 bg-amber-500 text-zinc-950 font-bold text-[10px] px-3 py-1 rounded-full uppercase tracking-widest">Popüler</div>
+                    <div>
+                        <div class="text-zinc-400 font-teko text-2xl uppercase tracking-wider">Gelişmiş Paket</div>
+                        <h3 class="font-teko text-4xl font-bold text-amber-400 mb-4">VIP+</h3>
+                        <div class="text-3xl font-bold font-teko mb-6"><span id="price-vipplus">50</span> TL <span class="text-xs text-zinc-500 font-normal">/ 30 Gün</span></div>
+                        <ul class="space-y-3 text-sm text-zinc-300 mb-8">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> /kit vipplus (Koruma 4 Set)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> 6x VIP Kasa Anahtarı</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-amber-400"></i> 2x Set Home Hakkı</li>
+                        </ul>
+                    </div>
+                    <button onclick="buyPackage('VIP+')" class="w-full py-3 rounded-xl bg-amber-500 hover:bg-amber-400 text-zinc-950 font-bold font-teko text-xl transition">Satın Al</button>
+                </div>
+
+                <!-- MVIP -->
+                <div class="bg-zinc-900/60 border border-zinc-800 rounded-3xl p-6 flex flex-col justify-between hover:border-rose-500/50 transition">
+                    <div>
+                        <div class="text-zinc-400 font-teko text-2xl uppercase tracking-wider">Mega Paket</div>
+                        <h3 class="font-teko text-4xl font-bold text-rose-500 mb-4">MVIP</h3>
+                        <div class="text-3xl font-bold font-teko mb-6"><span id="price-mvip">80</span> TL <span class="text-xs text-zinc-500 font-normal">/ 30 Gün</span></div>
+                        <ul class="space-y-3 text-sm text-zinc-300 mb-8">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-500"></i> /kit mvip (Özel Set & Kılıç)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-500"></i> 10x Efsanevi Anahtar</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-500"></i> /feed ve /repair</li>
+                        </ul>
+                    </div>
+                    <button onclick="buyPackage('MVIP')" class="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold font-teko text-xl transition">Satın Al</button>
+                </div>
+
+                <!-- MVIP+ -->
+                <div class="bg-zinc-900/60 border border-rose-500/40 rounded-3xl p-6 flex flex-col justify-between glow-red">
+                    <div>
+                        <div class="text-zinc-400 font-teko text-2xl uppercase tracking-wider">En Üstün Paket</div>
+                        <h3 class="font-teko text-4xl font-bold text-rose-500 mb-4">MVIP+</h3>
+                        <div class="text-3xl font-bold font-teko mb-6"><span id="price-mvipplus">120</span> TL <span class="text-xs text-zinc-500 font-normal">/ 30 Gün</span></div>
+                        <ul class="space-y-3 text-sm text-zinc-300 mb-8">
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-500"></i> /kit mvipplus (En Güçlü Set)</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-500"></i> 15x Efsanevi Anahtar</li>
+                            <li class="flex items-center gap-2"><i class="fa-solid fa-check text-rose-500"></i> Özel Renkli Tag & Prefix</li>
+                        </ul>
+                    </div>
+                    <button onclick="buyPackage('MVIP+')" class="w-full py-3 rounded-xl bg-rose-600 hover:bg-rose-500 text-white font-bold font-teko text-xl transition">Satın Al</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Kurallar Bölümü -->
+    <section id="kurallar" class="py-20 border-b border-zinc-900 bg-zinc-950/50">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-12">
+                <h2 class="font-teko text-5xl font-bold uppercase tracking-wide">Sunucu <span class="text-rose-500">Kuralları</span></h2>
+                <p class="text-zinc-400 mb-6">Adil ve keyifli bir oyun ortamı için uymamız gereken kurallar.</p>
+                
+                <div class="relative max-w-md mx-auto">
+                    <i class="fa-solid fa-search absolute left-4 top-3.5 text-zinc-500"></i>
+                    <input type="text" id="ruleSearch" onkeyup="filterRules()" placeholder="Kural ara (örn. küfür, hile, bug)..." class="w-full bg-zinc-900 border border-zinc-800 rounded-2xl pl-11 pr-4 py-3 text-sm focus:outline-none focus:border-rose-500 transition">
+                </div>
+            </div>
+
+            <div id="rulesList" class="space-y-4">
+                <div class="rule-item bg-zinc-900/60 border border-zinc-800 p-6 rounded-2xl">
+                    <h3 class="font-bold text-lg text-white mb-1 flex items-center gap-2"><i class="fa-solid fa-ban text-rose-500"></i> 1. Hile ve 3. Parti Yazılım Kullanımı</h3>
+                    <p class="text-zinc-400 text-sm">KillAura, Fly, X-Ray veya hile barındıran tüm modifikasyonlar kesinlikle yasaktır. Cezası süresiz ban!</p>
+                </div>
+                <div class="rule-item bg-zinc-900/60 border border-zinc-800 p-6 rounded-2xl">
+                    <h3 class="font-bold text-lg text-white mb-1 flex items-center gap-2"><i class="fa-solid fa-comment-slash text-rose-500"></i> 2. Küfür, Hakaret ve Argo</h3>
+                    <p class="text-zinc-400 text-sm">Oyunculara veya aile değerlerine yönelik küfür, hakaret ve ağır argo kullanımı mute veya ban sebebidir.</p>
+                </div>
+                <div class="rule-item bg-zinc-900/60 border border-zinc-800 p-6 rounded-2xl">
+                    <h3 class="font-bold text-lg text-white mb-1 flex items-center gap-2"><i class="fa-solid fa-bug text-rose-500"></i> 3. Bug ve Açık Suistimali</h3>
+                    <p class="text-zinc-400 text-sm">Oyun içi hatalardan (bug) yararlanarak haksız kazanç sağlamak yasaktır. Tespit edilen açıklar yönetime bildirilmelidir.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="mt-auto py-12 border-t border-zinc-900 text-center text-sm text-zinc-500">
+        <div class="max-w-7xl mx-auto px-4 flex flex-col md:flex-row items-center justify-between gap-4">
+            <div>
+                <span class="font-teko text-2xl font-bold text-zinc-300">MAGMA NETWORK</span>
+                <p class="text-xs text-zinc-600">© 2026 Tüm hakları saklıdır. Mojang AB ile resmi bir bağı yoktur.</p>
+            </div>
+            <div class="flex items-center gap-6">
+                <a href="admin.html" class="text-rose-500 hover:underline font-semibold flex items-center gap-1"><i class="fa-solid fa-lock"></i> Yönetim Paneli</a>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Giriş Modalı -->
+    <div id="loginModal" class="hidden fixed inset-0 z-50 bg-black/80 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-zinc-900 border border-zinc-800 rounded-3xl p-8 max-w-md w-full relative">
+            <button onclick="closeLoginModal()" class="absolute top-4 right-4 text-zinc-400 hover:text-white"><i class="fa-solid fa-xmark text-xl"></i></button>
+            <h3 class="font-teko text-3xl font-bold mb-2">Minecraft Girişi</h3>
+            <p class="text-zinc-400 text-sm mb-6">Oyuncu profilini görüntülemek için Minecraft kullanıcı adını yaz.</p>
+            
+            <input type="text" id="mcUsernameInput" placeholder="Örn. ArdaPala" class="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-3 text-sm mb-4 focus:outline-none focus:border-rose-500">
+            <button onclick="handleLogin()" class="w-full py-3 bg-rose-600 hover:bg-rose-500 text-white font-bold rounded-xl transition">Giriş Yap</button>
+        </div>
+    </div>
+
+    <!-- Harici Ayrı JS Dosyası -->
+    <script src="script.js"></script>
+</body>
+</html>
