@@ -69,24 +69,51 @@ function loadPrices() {
     if (document.getElementById("price-mvipplus")) document.getElementById("price-mvipplus").innerText = prices.mvipplus;
 }
 
-// Bakım Modu Durumu Kontrol Et (Tam Ekran Overlay Uyumlu)
+// Bakım Modu ve Geri Sayım Yönetimi
+let maintenanceTimerInterval = null;
+
 function checkMaintenance() {
     const isMaint = localStorage.getItem("magma_maintenance") === "true";
     const maintMsg = localStorage.getItem("magma_maintenance_msg") || "Sunucumuzda bakım yapılmaktadır.";
+    const endTime = localStorage.getItem("magma_maintenance_endtime");
+    
     const overlay = document.getElementById("maintenanceOverlay");
     const text = document.getElementById("maintenanceText");
+    const timerElem = document.getElementById("maintenanceCountdown");
 
     if (overlay && text) {
         if (isMaint) {
             overlay.classList.remove("hidden");
             text.innerText = maintMsg;
+
+            if (endTime && timerElem) {
+                if (maintenanceTimerInterval) clearInterval(maintenanceTimerInterval);
+                
+                function updateCountdown() {
+                    const now = Date.now();
+                    const diff = parseInt(endTime) - now;
+
+                    if (diff <= 0) {
+                        timerElem.innerText = "Süre doldu, yakında açılıyor!";
+                        clearInterval(maintenanceTimerInterval);
+                    } else {
+                        const minutes = Math.floor(diff / (1000 * 60));
+                        const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+                        timerElem.innerText = `Tahmini Kalan Süre: ${minutes} dk ${seconds < 10 ? '0' : ''}${seconds} sn`;
+                    }
+                }
+
+                updateCountdown();
+                maintenanceTimerInterval = setInterval(updateCountdown, 1000);
+            }
         } else {
             overlay.classList.add("hidden");
+            if (maintenanceTimerInterval) clearInterval(maintenanceTimerInterval);
         }
     }
 }
 
-// Canlı Sunucu Durumu (Önbellek Engellemeli ve Anlık Güncellemeli)
+// Canlı Sunucu Durumu
 let countdown = 10;
 
 function updateServerStatus() {
@@ -118,7 +145,6 @@ function updateServerStatus() {
         });
 }
 
-// Yedek Durum Kontrol Servisi
 function fetchFallbackStatus(ip, port) {
     const cacheBuster = Date.now();
     fetch(`https://mcapi.us/server/status?ip=${ip}&port=${port}&_=${cacheBuster}`)
@@ -150,7 +176,6 @@ function fetchFallbackStatus(ip, port) {
         });
 }
 
-// 10 Saniyelik Sayaç
 setInterval(() => {
     countdown--;
     const timerElem = document.getElementById("refreshTimer");
@@ -162,7 +187,6 @@ setInterval(() => {
     }
 }, 1000);
 
-// Kurallar Arama Filtresi
 function filterRules() {
     const queryInput = document.getElementById("ruleSearch");
     if (!queryInput) return;
@@ -175,7 +199,6 @@ function filterRules() {
     });
 }
 
-// Paket Satın Alma İşlemi (WhatsApp Yönlendirmeli)
 function buyPackage(pkgName) {
     const user = localStorage.getItem("magma_user");
     if (!user) {
@@ -185,17 +208,12 @@ function buyPackage(pkgName) {
     }
 
     const whatsappNumber = "905383228459"; 
-
-    // WhatsApp otomatik mesaj tasarımı
     const message = `Merhaba! Ben ${user}. Sunucunuzdan ${pkgName} paketini satın almak istiyorum. Ödeme için yardımcı olur musunuz?`;
     const encodedMessage = encodeURIComponent(message);
-    
-    // WhatsApp sohbet linkini oluştur ve yeni sekmede aç
     const whatsappURL = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
     window.open(whatsappURL, '_blank');
 }
 
-// Admin Paneli: Fiyat Kaydetme
 function savePricesFromAdmin() {
     const prices = {
         vip: Number(document.getElementById("input-vip").value),
@@ -207,16 +225,25 @@ function savePricesFromAdmin() {
     alert("VIP fiyatları başarıyla güncellendi!");
 }
 
-// Admin Paneli: Bakım Modu Kaydetme
+// Admin Paneli: Bakım Modu ve Dakika Kaydetme
 function saveMaintenanceFromAdmin() {
     const isMaint = document.getElementById("maintToggle").checked;
     const msg = document.getElementById("maintMsg").value;
+    const duration = Number(document.getElementById("maintDuration").value) || 0;
+    
     localStorage.setItem("magma_maintenance", isMaint);
     localStorage.setItem("magma_maintenance_msg", msg);
-    alert("Bakım modu ayarları başarıyla güncellendi!");
+
+    if (isMaint && duration > 0) {
+        const endTime = Date.now() + (duration * 60 * 1000);
+        localStorage.setItem("magma_maintenance_endtime", endTime);
+    } else if (!isMaint) {
+        localStorage.removeItem("magma_maintenance_endtime");
+    }
+
+    alert("Bakım modu ve geri sayım ayarları başarıyla güncellendi!");
 }
 
-// Sayfa Yüklendiğinde Otomatik Başlat
 document.addEventListener("DOMContentLoaded", function() {
     loadPrices();
     checkMaintenance();
@@ -225,7 +252,6 @@ document.addEventListener("DOMContentLoaded", function() {
     const savedUser = localStorage.getItem("magma_user");
     if (savedUser) updateAuthUI(savedUser);
 
-    // Eğer Admin panelindeysek mevcut değerleri alanlara doldur
     if (document.getElementById("input-vip")) {
         const prices = JSON.parse(localStorage.getItem("magma_vip_prices")) || { vip: 30, vipplus: 50, mvip: 80, mvipplus: 120 };
         document.getElementById("input-vip").value = prices.vip;
