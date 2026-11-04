@@ -1,6 +1,6 @@
 // IP Kopyalama Fonksiyonu
 function copyIP() {
-    const ip = "gold.magmanode.com:27367";
+    const ip = "gold.magmanode.com:25667";
     navigator.clipboard.writeText(ip);
     const feedback = document.getElementById("copyFeedback");
     if (feedback) {
